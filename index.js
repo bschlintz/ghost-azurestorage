@@ -41,7 +41,7 @@ class AzureStorageAdapter extends BaseStorage {
           console.log('Created the container or already existed. Container:' + options.container);
           let fileOptions = {
             contentSettings: {
-              contentType: mime.getType(image.path)
+              contentType: mime.getType(image.name)
             }
           };
           fileService.createBlockBlobFromLocalFile(options.container, uniqueName, image.path, fileOptions, function (error) {
