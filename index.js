@@ -6,6 +6,7 @@ const Promise = require("bluebird");
 const request = require("request");
 const azure = require('azure-storage');
 const url = require('url');
+const mime = require('mime');
 
 var options = {};
 
@@ -38,7 +39,12 @@ class AzureStorageAdapter extends BaseStorage {
           console.log(error);
         else {
           console.log('Created the container or already existed. Container:' + options.container);
-          fileService.createBlockBlobFromLocalFile(options.container, uniqueName, image.path, function (error) {
+          let fileOptions = {
+            contentSettings: {
+              contentType: mime.getType(image.path)
+            }
+          };
+          fileService.createBlockBlobFromLocalFile(options.container, uniqueName, image.path, fileOptions, function (error) {
             if (error) {
               console.log(error);
               reject(error.message);
